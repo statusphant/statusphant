@@ -38,11 +38,14 @@ const AppBar: React.FC = () => {
 
     const data = await res.json();
 
+    console.log(data);
+
     if (data.user.id) {
       Cookies.set("token", data.token);
       auth.setToken(data.token);
       auth.setName(data.user.name);
       auth.setEmail(data.user.email);
+      auth.setAvatar(data.user.avatar);
     }
   };
 
@@ -63,9 +66,22 @@ const AppBar: React.FC = () => {
         {!auth.token ? (
           <Flex justifyContent="flex-end" width={["100vw", "auto"]}>
             <Box mx="4px">
-              <Button variantColor="gray" border="none">
-                Sign in
-              </Button>
+              <GoogleLogin
+                clientId={publicRuntimeConfig.GOOGLE_CLIENT_ID}
+                onSuccess={handleResponse}
+                onFailure={handleResponse}
+                buttonText="Login"
+                render={(renderProps) => (
+                  <Button
+                    onClick={renderProps.onClick}
+                    isDisabled={renderProps.disabled}
+                    variantColor="gray"
+                    border="none"
+                  >
+                    Sign in
+                  </Button>
+                )}
+              />
             </Box>
             <Box mx="4px">
               <GoogleLogin
