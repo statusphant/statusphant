@@ -6,7 +6,7 @@ import bodyParser from "body-parser";
 import mongoose from "mongoose";
 import next from "next";
 
-import apiHandler from "../api";
+import apiHandler from "../api-src";
 
 const PORT: number = parseInt(process.env.PORT, 10) || 3000;
 
