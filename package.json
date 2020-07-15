@@ -7,7 +7,7 @@
     "build": "next build && tsc --project tsconfig.server.json",
     "dev": "nodemon",
     "postinstall": "npx install-types",
-    "start": "NODE_ENV=production node dist/index.js"
+    "start": "NODE_ENV=production node dist/server/index.js"
   },
   "repository": {
     "type": "git",
