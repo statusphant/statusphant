@@ -1,8 +1,11 @@
+import dbConnect from "../../helpers/dbConnect";
 import { decode } from "../../helpers/jwt";
 import UserModel from "../../models/user";
 
 export default async function handler(req, res) {
   const { method } = req;
+
+  await dbConnect();
 
   const token = req.headers["authorization"].split(" ")[1].trim();
 

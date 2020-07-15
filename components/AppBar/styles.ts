@@ -7,6 +7,7 @@ export const Title = styled(Box)`
   letter-spacing: 0.1rem;
   font-size: 2.2rem;
   font-weight: 700;
+  cursor: pointer;
   ${({ theme: { colors } }) => css`
     color: ${colors.green[800]};
   `}

@@ -38,9 +38,10 @@ const App = (props) => {
 
 App.getInitialProps = async ({ ctx }) => {
   const { token } = cookies(ctx);
+  const { res, req } = ctx;
 
   if (token) {
-    const res = await fetch("http://localhost:3000/api/auth", {
+    const response = await fetch("http://localhost:3000/api/auth", {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -49,7 +50,16 @@ App.getInitialProps = async ({ ctx }) => {
       },
     });
 
-    const data = await res.json();
+    const data = await response.json();
+
+    if (!data.user.app && req.url !== "/new") {
+      if (res) {
+        res.writeHead(301, {
+          Location: "new",
+        });
+        res.end();
+      }
+    }
 
     if (data.user) {
       return {

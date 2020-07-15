@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import Router from "next/router";
+import Link from "next/link";
 import getConfig from "next/config";
 import fetch from "cross-fetch";
 import { Button, Avatar, useToast } from "@chakra-ui/core";
@@ -54,6 +56,9 @@ const AppBar: React.FC = () => {
       auth.setName(data.user.name);
       auth.setEmail(data.user.email);
       auth.setAvatar(data.user.avatar);
+      if (!data.user.app) {
+        Router.push("/new");
+      }
     }
   };
 
@@ -73,7 +78,9 @@ const AppBar: React.FC = () => {
   return (
     <Flex py={["4px", "16px"]} width="100vw" flexDirection={["column", "row"]}>
       <Box width={[1, 1 / 5]}>
-        <Title>{META.title}.</Title>
+        <Link href="/">
+          <Title>{META.title}.</Title>
+        </Link>
       </Box>
       <Box width={[1, 2 / 5]}></Box>
       <Box width={[1, 2 / 5]}>
