@@ -6,7 +6,7 @@ import bodyParser from "body-parser";
 import mongoose from "mongoose";
 import next from "next";
 
-import apiHandler from "../api-src";
+import apiHandler from "../api";
 
 const PORT: number = parseInt(process.env.PORT, 10) || 3000;
 
@@ -32,7 +32,7 @@ app.prepare().then(async () => {
     })
   );
 
-  server.use("/api", apiHandler);
+  // server.use("/api", apiHandler);
 
   server.all("*", (req: Request, res: Response) => handle(req, res));
 
