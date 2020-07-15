@@ -25,7 +25,7 @@ const create = async (req: Request, res: Response) => {
       token: token,
     });
   } else {
-    // TODO handle invv schema
+    // TODO handle invalid schema
     res.send({
       error: isValidRequest,
     });

@@ -1,7 +1,7 @@
 import React from "react";
 import getConfig from "next/config";
 import fetch from "cross-fetch";
-import { Button, Avatar } from "@chakra-ui/core";
+import { Button, Avatar, useToast } from "@chakra-ui/core";
 import { Flex, Box } from "reflexbox";
 import * as Cookies from "js-cookie";
 import { GoogleLogin } from "react-google-login";
@@ -17,6 +17,7 @@ const { publicRuntimeConfig } = getConfig();
 
 const AppBar: React.FC = () => {
   const auth = AuthStore.useContainer();
+  const toast = useToast();
 
   const handleResponse = async (response) => {
     const { profileObj } = response;
@@ -26,6 +27,8 @@ const AppBar: React.FC = () => {
       name: profileObj.name,
       avatar: profileObj.imageUrl,
     };
+
+    console.log(response);
 
     const res = await fetch("/api/users", {
       method: "POST",
@@ -40,13 +43,24 @@ const AppBar: React.FC = () => {
 
     console.log(data);
 
-    if (data.user.id) {
+    if (data.error) {
+      toast({
+        title: data.error.message,
+        status: "error",
+        duration: 3000,
+      });
+    } else if (data.user.id) {
       Cookies.set("token", data.token);
       auth.setToken(data.token);
       auth.setName(data.user.name);
       auth.setEmail(data.user.email);
       auth.setAvatar(data.user.avatar);
     }
+  };
+
+  const handleFailure = async (response) => {
+    console.error("Error");
+    console.error(response);
   };
 
   const handleLogout = async () => {
@@ -69,7 +83,7 @@ const AppBar: React.FC = () => {
               <GoogleLogin
                 clientId={publicRuntimeConfig.GOOGLE_CLIENT_ID}
                 onSuccess={handleResponse}
-                onFailure={handleResponse}
+                onFailure={handleFailure}
                 buttonText="Login"
                 render={(renderProps) => (
                   <Button
@@ -87,7 +101,7 @@ const AppBar: React.FC = () => {
               <GoogleLogin
                 clientId={publicRuntimeConfig.GOOGLE_CLIENT_ID}
                 onSuccess={handleResponse}
-                onFailure={handleResponse}
+                onFailure={handleFailure}
                 buttonText="Login"
                 render={(renderProps) => (
                   <Button
