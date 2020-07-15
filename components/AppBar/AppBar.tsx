@@ -95,7 +95,7 @@ const AppBar: React.FC = () => {
                     variantColor="gray"
                     border="none"
                     isLoading={loading}
-                    loadingText="Take you in"
+                    loadingText="Taking you in"
                   >
                     Sign in
                   </Button>
@@ -118,7 +118,7 @@ const AppBar: React.FC = () => {
                     variantColor="green"
                     border="none"
                     isLoading={loading}
-                    loadingText="Take you in"
+                    loadingText="Taking you in"
                   >
                     Get Started
                   </Button>
