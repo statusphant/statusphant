@@ -8,6 +8,6 @@ export const Title = styled(Box)`
   font-size: 2.2rem;
   font-weight: 700;
   ${({ theme: { colors } }) => css`
-    color: ${colors.purple[800]};
+    color: ${colors.green[800]};
   `}
 `;
