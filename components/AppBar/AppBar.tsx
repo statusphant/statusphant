@@ -1,13 +1,58 @@
 import React from "react";
-
-import { Button } from "@chakra-ui/core";
+import getConfig from "next/config";
+import fetch from "cross-fetch";
+import { Button, Avatar } from "@chakra-ui/core";
 import { Flex, Box } from "reflexbox";
+import * as Cookies from "js-cookie";
+import { GoogleLogin } from "react-google-login";
 
 import META from "../../configs/meta";
 
+// stores
+import AuthStore from "../../stores/auth";
+
 import { Title } from "./styles";
 
+const { publicRuntimeConfig } = getConfig();
+
 const AppBar: React.FC = () => {
+  const auth = AuthStore.useContainer();
+
+  const handleResponse = async (response) => {
+    const { profileObj } = response;
+    const user = {
+      id: profileObj.googleId,
+      email: profileObj.email,
+      name: profileObj.name,
+      avatar: profileObj.imageUrl,
+    };
+
+    const res = await fetch("/api/users", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(user),
+    });
+
+    const data = await res.json();
+
+    if (data.user.id) {
+      Cookies.set("token", data.token);
+      auth.setToken(data.token);
+      auth.setName(data.user.name);
+      auth.setEmail(data.user.email);
+    }
+  };
+
+  const handleLogout = async () => {
+    Cookies.remove("token");
+    auth.setToken(null);
+    auth.setEmail(null);
+    auth.setName(null);
+  };
+
   return (
     <Flex py={["4px", "16px"]} width="100vw" flexDirection={["column", "row"]}>
       <Box width={[1, 1 / 5]}>
@@ -15,18 +60,44 @@ const AppBar: React.FC = () => {
       </Box>
       <Box width={[1, 2 / 5]}></Box>
       <Box width={[1, 2 / 5]}>
-        <Flex justifyContent="flex-end" width={["100vw", "auto"]}>
-          <Box mx="4px">
-            <Button variantColor="gray" border="none">
-              Sign in
-            </Button>
-          </Box>
-          <Box mx="4px">
-            <Button variantColor="green" border="none">
-              Get Started
-            </Button>
-          </Box>
-        </Flex>
+        {!auth.token ? (
+          <Flex justifyContent="flex-end" width={["100vw", "auto"]}>
+            <Box mx="4px">
+              <Button variantColor="gray" border="none">
+                Sign in
+              </Button>
+            </Box>
+            <Box mx="4px">
+              <GoogleLogin
+                clientId={publicRuntimeConfig.GOOGLE_CLIENT_ID}
+                onSuccess={handleResponse}
+                onFailure={handleResponse}
+                buttonText="Login"
+                render={(renderProps) => (
+                  <Button
+                    onClick={renderProps.onClick}
+                    isDisabled={renderProps.disabled}
+                    variantColor="green"
+                    border="none"
+                  >
+                    Get Started
+                  </Button>
+                )}
+              />
+            </Box>
+          </Flex>
+        ) : (
+          <Flex justifyContent="flex-end" width={["100vw", "auto"]}>
+            <Box mx="4px">
+              <Avatar name={auth.name} src={auth.avatar} size="sm" />
+            </Box>
+            <Box mx="4px">
+              <Button variantColor="gray" border="none" onClick={handleLogout}>
+                Log out
+              </Button>
+            </Box>
+          </Flex>
+        )}
       </Box>
     </Flex>
   );

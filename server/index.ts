@@ -1,4 +1,9 @@
+require("dotenv-safe").config();
+
 import express, { Request, Response } from "express";
+import cors from "cors";
+import bodyParser from "body-parser";
+import mongoose from "mongoose";
 import next from "next";
 
 import apiHandler from "../api";
@@ -11,8 +16,21 @@ const app = next({ dev });
 
 const handle = app.getRequestHandler();
 
-app.prepare().then(() => {
+app.prepare().then(async () => {
   const server = express();
+
+  await mongoose.connect(process.env.MONGODB_URL, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  });
+
+  server.use(cors());
+
+  server.use(
+    bodyParser.json({
+      type: "application/json",
+    })
+  );
 
   server.use("/api", apiHandler);
 
