@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import UserModel, { schema, User } from "./model";
 
-import { encode } from "../../helpers/jwt";
+import { encode } from "../../../helpers/jwt";
 
 const create = async (req: Request, res: Response) => {
   const userRequest: User = req.body;

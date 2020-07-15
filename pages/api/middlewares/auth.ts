@@ -1,4 +1,4 @@
-import { decode } from "../../helpers/jwt";
+import { decode } from "../../../helpers/jwt";
 import UserModel from "../users/model";
 
 const auth = async (req, res, next) => {
