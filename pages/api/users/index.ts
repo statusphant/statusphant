@@ -1,37 +1,45 @@
-import { Request, Response } from "express";
-import UserModel, { schema, User } from "./model";
-
+import dbConnect from "../../../helpers/dbConnect";
 import { encode } from "../../../helpers/jwt";
 
-const create = async (req: Request, res: Response) => {
-  const userRequest: User = req.body;
-  const isValidRequest = await schema.isValid(userRequest);
+import UserModel, { schema, User } from "../../../models/user";
 
-  if (isValidRequest) {
-    const user = await UserModel.findOne({ email: userRequest.email });
-    let newUser = null;
-    if (user) {
-      newUser = user;
-    } else {
-      newUser = new UserModel(userRequest);
-      await newUser.save();
-    }
-    const token = await encode({
-      id: newUser.id,
-      email: newUser.email,
-    });
-    res.status(200).send({
-      user: newUser,
-      token: token,
-    });
-  } else {
-    // TODO handle invalid schema
-    res.send({
-      error: isValidRequest,
-    });
+export default async function handler(req, res) {
+  const { method } = req;
+
+  await dbConnect();
+
+  switch (method) {
+    case "POST":
+      const userRequest: User = req.body;
+
+      schema
+        .validate(userRequest)
+        .then(async (value) => {
+          let user = await UserModel.findOne({ email: userRequest.email });
+
+          if (!user) {
+            user = new UserModel(userRequest);
+
+            await user.save();
+          } else {
+          }
+
+          const token = await encode({
+            id: user.id,
+            email: user.email,
+          });
+
+          res.status(201).send({ token, user });
+        })
+        .catch((err) => {
+          res.status(401).send({
+            errors: err.errors,
+          });
+        });
+
+      break;
+
+    default:
+      res.status(405).send({ error: `METHOD: ${method} is not allowed` });
   }
-};
-
-export default {
-  create,
-};
+}

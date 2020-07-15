@@ -51,12 +51,21 @@ App.getInitialProps = async ({ ctx }) => {
 
     const data = await res.json();
 
-    return {
-      token: token,
-      name: data.user.name,
-      email: data.user.email,
-      avatar: data.user.avatar,
-    };
+    if (data.user) {
+      return {
+        token: token,
+        name: data.user.name,
+        email: data.user.email,
+        avatar: data.user.avatar,
+      };
+    } else {
+      return {
+        token: null,
+        name: null,
+        email: null,
+        avatar: null,
+      };
+    }
   } else {
     return {
       token: null,

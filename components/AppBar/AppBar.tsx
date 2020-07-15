@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import getConfig from "next/config";
 import fetch from "cross-fetch";
 import { Button, Avatar, useToast } from "@chakra-ui/core";
@@ -17,6 +17,7 @@ const { publicRuntimeConfig } = getConfig();
 
 const AppBar: React.FC = () => {
   const auth = AuthStore.useContainer();
+  const [loading, setLoading] = useState(false);
   const toast = useToast();
 
   const handleResponse = async (response) => {
@@ -27,8 +28,6 @@ const AppBar: React.FC = () => {
       name: profileObj.name,
       avatar: profileObj.imageUrl,
     };
-
-    console.log(response);
 
     const res = await fetch("/api/users", {
       method: "POST",
@@ -41,7 +40,7 @@ const AppBar: React.FC = () => {
 
     const data = await res.json();
 
-    console.log(data);
+    setLoading(false);
 
     if (data.error) {
       toast({
@@ -59,6 +58,7 @@ const AppBar: React.FC = () => {
   };
 
   const handleFailure = async (response) => {
+    setLoading(false);
     console.error("Error");
     console.error(response);
   };
@@ -87,10 +87,15 @@ const AppBar: React.FC = () => {
                 buttonText="Login"
                 render={(renderProps) => (
                   <Button
-                    onClick={renderProps.onClick}
+                    onClick={() => {
+                      setLoading(true);
+                      renderProps.onClick();
+                    }}
                     isDisabled={renderProps.disabled}
                     variantColor="gray"
                     border="none"
+                    isLoading={loading}
+                    loadingText="Take you in"
                   >
                     Sign in
                   </Button>
@@ -105,10 +110,15 @@ const AppBar: React.FC = () => {
                 buttonText="Login"
                 render={(renderProps) => (
                   <Button
-                    onClick={renderProps.onClick}
+                    onClick={() => {
+                      setLoading(true);
+                      renderProps.onClick();
+                    }}
                     isDisabled={renderProps.disabled}
                     variantColor="green"
                     border="none"
+                    isLoading={loading}
+                    loadingText="Take you in"
                   >
                     Get Started
                   </Button>
