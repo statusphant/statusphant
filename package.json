@@ -29,6 +29,7 @@
     "next": "^9.4.4",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "reflexbox": "^4.0.6",
     "styled-components": "^5.1.1",
     "styled-reset": "^4.2.0"
   },
@@ -38,6 +39,7 @@
     "@types/nodemon": "^1.19.0",
     "@types/react": "^16.9.41",
     "@types/react-dom": "^16.9.8",
+    "@types/reflexbox": "^4.0.1",
     "@types/styled-components": "^5.1.1",
     "install-types": "^2.0.1",
     "nodemon": "^2.0.4",
