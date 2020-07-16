@@ -5,6 +5,8 @@ import { ThemeProvider } from "styled-components";
 import { ThemeProvider as ChakraThemeProvider } from "@chakra-ui/core";
 import cookies from "next-cookies";
 import fetch from "cross-fetch";
+import Progress from 'nprogress';
+import Router from 'next/router';
 
 import META from "../configs/meta";
 import theme from "../configs/theme";
@@ -12,6 +14,10 @@ import theme from "../configs/theme";
 import { GlobalStyles } from "../components/GlobalStyles";
 import Container from "../components/Container";
 import AppBar from "../components/AppBar";
+
+Router.events.on('routeChangeStart', () => Progress.start());
+Router.events.on('routeChangeComplete', () => Progress.done());
+Router.events.on('routeChangeError', () => Progress.done());
 
 // stores
 import AuthStore from "../stores/auth";
