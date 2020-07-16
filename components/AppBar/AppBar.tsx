@@ -3,10 +3,12 @@ import Router, { useRouter } from "next/router";
 import Link from "next/link";
 import getConfig from "next/config";
 import fetch from "cross-fetch";
-import { Button, Avatar, useToast } from "@chakra-ui/core";
 import { Flex, Box } from "reflexbox";
 import * as Cookies from "js-cookie";
 import { GoogleLogin } from "react-google-login";
+import { toast } from "react-toastify";
+
+import { Avatar, Button } from "../kit";
 
 import META from "../../configs/meta";
 
@@ -22,7 +24,6 @@ const AppBar: React.FC = () => {
   const router = useRouter();
 
   const [loading, setLoading] = useState(false);
-  const toast = useToast();
 
   const handleResponse = async (response) => {
     const { profileObj } = response;
@@ -47,11 +48,7 @@ const AppBar: React.FC = () => {
     setLoading(false);
 
     if (data.error) {
-      toast({
-        title: data.error.message,
-        status: "error",
-        duration: 3000,
-      });
+      toast.error(data.error.message);
     } else if (data.user.id) {
       Cookies.set("token", data.token);
       auth.setToken(data.token);
@@ -91,7 +88,7 @@ const AppBar: React.FC = () => {
       <Box width={[1, 2 / 5]}>
         {!auth.token ? (
           <Flex justifyContent="flex-end" width={["100vw", "auto"]}>
-            <Box mx="4px">
+            <Box mx="4px" width={1 / 3}>
               <GoogleLogin
                 clientId={publicRuntimeConfig.GOOGLE_CLIENT_ID}
                 onSuccess={handleResponse}
@@ -103,18 +100,16 @@ const AppBar: React.FC = () => {
                       setLoading(true);
                       renderProps.onClick();
                     }}
-                    isDisabled={renderProps.disabled}
-                    variantColor="gray"
-                    border="none"
+                    disabled={renderProps.disabled}
+                    variant="gray"
                     isLoading={loading}
-                    loadingText="Taking you in"
                   >
                     Sign in
                   </Button>
                 )}
               />
             </Box>
-            <Box mx="4px">
+            <Box mx="4px" width={1 / 3}>
               <GoogleLogin
                 clientId={publicRuntimeConfig.GOOGLE_CLIENT_ID}
                 onSuccess={handleResponse}
@@ -126,11 +121,9 @@ const AppBar: React.FC = () => {
                       setLoading(true);
                       renderProps.onClick();
                     }}
-                    isDisabled={renderProps.disabled}
-                    variantColor="green"
-                    border="none"
+                    disabled={renderProps.disabled}
+                    variant="primary"
                     isLoading={loading}
-                    loadingText="Taking you in"
                   >
                     Get Started
                   </Button>
@@ -143,8 +136,7 @@ const AppBar: React.FC = () => {
             {!router.pathname.includes("/dashboard") && (
               <Box mx="4px">
                 <Button
-                  variantColor="green"
-                  border="none"
+                  variant="primary"
                   onClick={() => Router.push("/dashboard")}
                 >
                   Dashboard
@@ -152,10 +144,10 @@ const AppBar: React.FC = () => {
               </Box>
             )}
             <Box mx="4px">
-              <Avatar name={auth.name} src={auth.avatar} size="sm" />
+              <Avatar name={auth.name} imgSrc={auth.avatar} alt={auth.name} />
             </Box>
             <Box mx="4px">
-              <Button variantColor="gray" border="none" onClick={handleLogout}>
+              <Button variant="gray" onClick={handleLogout}>
                 Log out
               </Button>
             </Box>

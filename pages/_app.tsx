@@ -2,7 +2,6 @@ import React from "react";
 import Head from "next/head";
 import getConfig from "next/config";
 import { ThemeProvider } from "styled-components";
-import { ThemeProvider as ChakraThemeProvider } from "@chakra-ui/core";
 import cookies from "next-cookies";
 import fetch from "cross-fetch";
 
@@ -20,18 +19,16 @@ const App = (props) => {
   const { Component, pageProps, token, name, email, avatar, app } = props;
   return (
     <ThemeProvider theme={theme}>
-      <ChakraThemeProvider>
-        <AuthStore.Provider initialState={{ token, name, email, avatar, app }}>
-          <Head>
-            <title>{META.title}</title>
-          </Head>
-          <GlobalStyles />
-          <Container>
-            <AppBar />
-          </Container>
-          <Component {...pageProps} />
-        </AuthStore.Provider>
-      </ChakraThemeProvider>
+      <AuthStore.Provider initialState={{ token, name, email, avatar, app }}>
+        <Head>
+          <title>{META.title}</title>
+        </Head>
+        <GlobalStyles />
+        <Container>
+          <AppBar />
+        </Container>
+        <Component {...pageProps} />
+      </AuthStore.Provider>
     </ThemeProvider>
   );
 };
