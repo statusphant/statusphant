@@ -1,8 +1,6 @@
 import styled, { css } from "styled-components";
 
-import { Box } from "reflexbox";
-
-export const Title = styled(Box)`
+export const Title = styled.h1`
   text-transform: uppercase;
   letter-spacing: 0.1rem;
   font-size: 2.2rem;
