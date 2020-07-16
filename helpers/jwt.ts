@@ -3,10 +3,11 @@ import jwt from "jsonwebtoken";
 export interface Payload {
   id: string;
   email: string;
-  iat: string;
+  iat?: string;
 }
 
-const encode = async (payload) => await jwt.sign(payload, process.env.SECRET);
+const encode = async (payload: Payload) =>
+  await jwt.sign(payload, process.env.SECRET);
 
 const decode = async (token: string): Promise<Payload> => {
   const decoded = await jwt.verify(token, process.env.SECRET);

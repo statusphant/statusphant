@@ -7,7 +7,7 @@ interface AvatarProps extends React.HTMLAttributes<HTMLDivElement> {
   name: string;
 }
 
-const StyledAvatar = styled.div<AvatarProps>`
+const StyledAvatar = styled.div`
   text-align: center;
   font-weight: 600;
   height: 2.5rem;
@@ -19,7 +19,7 @@ const StyledAvatar = styled.div<AvatarProps>`
 
 const Avatar: React.FC<AvatarProps> = (props: AvatarProps) => {
   return (
-    <StyledAvatar {...props}>
+    <StyledAvatar>
       {props.imgSrc ? (
         <img src={props.imgSrc} alt={props.alt} title={props.name} />
       ) : (

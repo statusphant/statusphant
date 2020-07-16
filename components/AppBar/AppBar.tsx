@@ -74,6 +74,7 @@ const AppBar: React.FC = () => {
     auth.setToken(null);
     auth.setEmail(null);
     auth.setName(null);
+    auth.setAvatar(null);
     Router.push("/");
   };
 
