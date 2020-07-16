@@ -1,12 +1,8 @@
-import { theme } from "@chakra-ui/core";
-
 export default {
-  ...theme,
   containerWidth: "1200px",
   breakpoints: ["40em", "52em", "64em"],
   colors: {
-    ...theme.colors,
-    green: {
+    primary: {
       50: "#f1ffdd",
       100: "#ddffaf",
       200: "#c8ff7f",
@@ -18,5 +14,30 @@ export default {
       800: "#2a4d00",
       900: "#0c1b00",
     },
+    gray: {
+      50: "#edf1fc",
+      100: "#cfd5e3",
+      200: "#b0bacd",
+      300: "#919eb9",
+      400: "#7282a5",
+      500: "#58698b",
+      600: "#44526d",
+      700: "#303a4e",
+      800: "#1c2330",
+      900: "#050c15",
+    },
+    red: {
+      50: "#ffe5e5",
+      100: "#fbbaba",
+      200: "#f28e8e",
+      300: "#eb6161",
+      400: "#e43535",
+      500: "#ca1b1b",
+      600: "#9e1314",
+      700: "#710c0e",
+      800: "#460506",
+      900: "#1e0000",
+    },
   },
+  radii: ["0.25rem", "0.5rem", "1rem"],
 };

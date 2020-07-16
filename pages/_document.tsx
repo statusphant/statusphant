@@ -40,6 +40,10 @@ export default class MyDocument extends Document {
       <Html lang="en">
         <Head>
           <meta name="description" content="Add description" />
+          <link
+            href="https://fonts.googleapis.com/css2?family=Staatliches&display=swap"
+            rel="stylesheet"
+          />
         </Head>
         <body>
           <Main />

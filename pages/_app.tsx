@@ -2,7 +2,6 @@ import React from "react";
 import Head from "next/head";
 import getConfig from "next/config";
 import { ThemeProvider } from "styled-components";
-import { ThemeProvider as ChakraThemeProvider } from "@chakra-ui/core";
 import cookies from "next-cookies";
 import fetch from "cross-fetch";
 import Progress from 'nprogress';
@@ -26,18 +25,16 @@ const App = (props) => {
   const { Component, pageProps, token, name, email, avatar, app } = props;
   return (
     <ThemeProvider theme={theme}>
-      <ChakraThemeProvider>
-        <AuthStore.Provider initialState={{ token, name, email, avatar, app }}>
-          <Head>
-            <title>{META.title}</title>
-          </Head>
-          <GlobalStyles />
-          <Container>
-            <AppBar />
-          </Container>
-          <Component {...pageProps} />
-        </AuthStore.Provider>
-      </ChakraThemeProvider>
+      <AuthStore.Provider initialState={{ token, name, email, avatar, app }}>
+        <Head>
+          <title>{META.title}</title>
+        </Head>
+        <GlobalStyles />
+        <Container>
+          <AppBar />
+        </Container>
+        <Component {...pageProps} />
+      </AuthStore.Provider>
     </ThemeProvider>
   );
 };
@@ -45,6 +42,8 @@ const App = (props) => {
 App.getInitialProps = async ({ ctx }) => {
   const { token } = cookies(ctx);
   const { res, req } = ctx;
+
+  const authPages = ["/new", "/dashboard"];
 
   const { publicRuntimeConfig } = getConfig();
 
@@ -72,7 +71,7 @@ App.getInitialProps = async ({ ctx }) => {
       }
     } else if (req && req.url.includes("/new") && data.user.app) {
       if (res) {
-        res.writeHeader(301, {
+        res.writeHead(301, {
           Location: "dashboard",
         });
         res.end();
@@ -97,6 +96,14 @@ App.getInitialProps = async ({ ctx }) => {
       };
     }
   } else {
+    if (req && authPages.includes(req.url)) {
+      if (res) {
+        res.writeHead(301, {
+          Location: "/",
+        });
+        res.end();
+      }
+    }
     return {
       token: null,
       name: null,
