@@ -4,8 +4,8 @@ import getConfig from "next/config";
 import { ThemeProvider } from "styled-components";
 import cookies from "next-cookies";
 import fetch from "cross-fetch";
-import Progress from 'nprogress';
-import Router from 'next/router';
+import Progress from "nprogress";
+import Router from "next/router";
 
 import META from "../configs/meta";
 import theme from "../configs/theme";
@@ -14,11 +14,11 @@ import { GlobalStyles } from "../components/GlobalStyles";
 import Container from "../components/Container";
 import AppBar from "../components/AppBar";
 
-import '../css/nprogress.css'
+import "../css/nprogress.css";
 
-Router.events.on('routeChangeStart', () => Progress.start());
-Router.events.on('routeChangeComplete', () => Progress.done());
-Router.events.on('routeChangeError', () => Progress.done());
+Router.events.on("routeChangeStart", () => Progress.start());
+Router.events.on("routeChangeComplete", () => Progress.done());
+Router.events.on("routeChangeError", () => Progress.done());
 
 // stores
 import AuthStore from "../stores/auth";
