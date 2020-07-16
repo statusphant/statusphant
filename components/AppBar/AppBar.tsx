@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Router from "next/router";
+import Router, { useRouter } from "next/router";
 import Link from "next/link";
 import getConfig from "next/config";
 import fetch from "cross-fetch";
@@ -19,6 +19,8 @@ const { publicRuntimeConfig } = getConfig();
 
 const AppBar: React.FC = () => {
   const auth = AuthStore.useContainer();
+  const router = useRouter();
+
   const [loading, setLoading] = useState(false);
   const toast = useToast();
 
@@ -138,14 +140,17 @@ const AppBar: React.FC = () => {
           </Flex>
         ) : (
           <Flex justifyContent="flex-end" width={["100vw", "auto"]}>
-            <Button
-              mx="4px"
-              variantColor="green"
-              border="none"
-              onClick={() => Router.push("/dashboard")}
-            >
-              Dashboard
-            </Button>
+            {!router.pathname.includes("/dashboard") && (
+              <Box mx="4px">
+                <Button
+                  variantColor="green"
+                  border="none"
+                  onClick={() => Router.push("/dashboard")}
+                >
+                  Dashboard
+                </Button>
+              </Box>
+            )}
             <Box mx="4px">
               <Avatar name={auth.name} src={auth.avatar} size="sm" />
             </Box>

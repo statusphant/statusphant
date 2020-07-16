@@ -40,6 +40,8 @@ App.getInitialProps = async ({ ctx }) => {
   const { token } = cookies(ctx);
   const { res, req } = ctx;
 
+  const authPages = ["/new", "/dashboard"];
+
   const { publicRuntimeConfig } = getConfig();
 
   if (token) {
@@ -66,7 +68,7 @@ App.getInitialProps = async ({ ctx }) => {
       }
     } else if (req && req.url.includes("/new") && data.user.app) {
       if (res) {
-        res.writeHeader(301, {
+        res.writeHead(301, {
           Location: "dashboard",
         });
         res.end();
@@ -91,6 +93,14 @@ App.getInitialProps = async ({ ctx }) => {
       };
     }
   } else {
+    if (req && authPages.includes(req.url)) {
+      if (res) {
+        res.writeHead(301, {
+          Location: "/",
+        });
+        res.end();
+      }
+    }
     return {
       token: null,
       name: null,
