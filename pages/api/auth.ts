@@ -2,16 +2,23 @@ import dbConnect from "../../helpers/dbConnect";
 import { decode } from "../../helpers/jwt";
 import UserModel from "../../models/user";
 
+export const authenticate = async (req) => {
+  const token = req.headers["authorization"].split(" ")[1].trim();
+
+  const decoded = await decode(token);
+
+  return decoded;
+};
+
 export default async function handler(req, res) {
   const { method } = req;
 
   await dbConnect();
 
-  const token = req.headers["authorization"].split(" ")[1].trim();
-
   switch (method) {
     case "POST":
-      const decoded = await decode(token);
+      const token = req.headers["authorization"].split(" ")[1].trim();
+      const decoded = await authenticate(req);
 
       const user = await UserModel.findOne({ email: decoded.email });
 

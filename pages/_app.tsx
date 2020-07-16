@@ -17,11 +17,11 @@ import AppBar from "../components/AppBar";
 import AuthStore from "../stores/auth";
 
 const App = (props) => {
-  const { Component, pageProps, token, name, email, avatar } = props;
+  const { Component, pageProps, token, name, email, avatar, app } = props;
   return (
     <ThemeProvider theme={theme}>
       <ChakraThemeProvider>
-        <AuthStore.Provider initialState={{ token, name, email, avatar }}>
+        <AuthStore.Provider initialState={{ token, name, email, avatar, app }}>
           <Head>
             <title>{META.title}</title>
           </Head>
@@ -52,10 +52,17 @@ App.getInitialProps = async ({ ctx }) => {
 
     const data = await response.json();
 
-    if (!data.user.app && req.url !== "/new") {
+    if (!data.user.app && req && req.url.includes("/new")) {
       if (res) {
         res.writeHead(301, {
           Location: "new",
+        });
+        res.end();
+      }
+    } else if (req && req.url.includes("/new") && data.user.app) {
+      if (res) {
+        res.writeHeader(301, {
+          Location: "dashboard",
         });
         res.end();
       }
@@ -67,6 +74,7 @@ App.getInitialProps = async ({ ctx }) => {
         name: data.user.name,
         email: data.user.email,
         avatar: data.user.avatar,
+        app: data.user.app,
       };
     } else {
       return {
@@ -74,6 +82,7 @@ App.getInitialProps = async ({ ctx }) => {
         name: null,
         email: null,
         avatar: null,
+        app: null,
       };
     }
   } else {
@@ -82,6 +91,7 @@ App.getInitialProps = async ({ ctx }) => {
       name: null,
       email: null,
       avatar: null,
+      app: null,
     };
   }
 };

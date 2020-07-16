@@ -58,6 +58,8 @@ const AppBar: React.FC = () => {
       auth.setAvatar(data.user.avatar);
       if (!data.user.app) {
         Router.push("/new");
+      } else {
+        Router.push("/dashboard");
       }
     }
   };
@@ -73,6 +75,7 @@ const AppBar: React.FC = () => {
     auth.setToken(null);
     auth.setEmail(null);
     auth.setName(null);
+    Router.push("/");
   };
 
   return (

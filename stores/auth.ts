@@ -12,6 +12,7 @@ function AuthStore(initialValues) {
   const [avatar, setAvatar] = useState<string | null>(
     initialValues.avatar || null
   );
+  const [app, setApp] = useState<string | null>(initialValues.app || null);
 
   return {
     token,
@@ -22,6 +23,8 @@ function AuthStore(initialValues) {
     setEmail,
     avatar,
     setAvatar,
+    app,
+    setApp,
   };
 }
 
