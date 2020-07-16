@@ -14,6 +14,8 @@ import { GlobalStyles } from "../components/GlobalStyles";
 import Container from "../components/Container";
 import AppBar from "../components/AppBar";
 
+import '../css/nprogress.css'
+
 Router.events.on('routeChangeStart', () => Progress.start());
 Router.events.on('routeChangeComplete', () => Progress.done());
 Router.events.on('routeChangeError', () => Progress.done());
