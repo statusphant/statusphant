@@ -31,7 +31,7 @@ const AppBar: React.FC = () => {
       avatar: profileObj.imageUrl,
     };
 
-    const res = await fetch("/api/users", {
+    const res = await fetch(`${publicRuntimeConfig.URL}/api/users`, {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -138,6 +138,14 @@ const AppBar: React.FC = () => {
           </Flex>
         ) : (
           <Flex justifyContent="flex-end" width={["100vw", "auto"]}>
+            <Button
+              mx="4px"
+              variantColor="green"
+              border="none"
+              onClick={() => Router.push("/dashboard")}
+            >
+              Dashboard
+            </Button>
             <Box mx="4px">
               <Avatar name={auth.name} src={auth.avatar} size="sm" />
             </Box>

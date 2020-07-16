@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Flex, Box } from "reflexbox";
 import Router from "next/router";
+import getConfig from "next/config";
 import fetch from "cross-fetch";
 import { Text, Input, Button, useToast } from "@chakra-ui/core";
 
@@ -9,6 +10,8 @@ import CenterImage from "../components/CenterImage";
 
 // stores
 import AuthStore from "../stores/auth";
+
+const { publicRuntimeConfig } = getConfig();
 
 const New = () => {
   const auth = AuthStore.useContainer();
@@ -19,7 +22,9 @@ const New = () => {
   useEffect(() => {
     setExist(false);
     async function check() {
-      const response = await fetch(`/api/apps/${query}`);
+      const response = await fetch(
+        `${publicRuntimeConfig.URL}/api/apps/${query}`
+      );
       const data = await response.json();
       setExist(data.exist);
     }
@@ -30,7 +35,7 @@ const New = () => {
   }, [query]);
 
   const handleSubmit = async () => {
-    const response = await fetch("/api/apps", {
+    const response = await fetch(`${publicRuntimeConfig.URL}/api/apps`, {
       method: "POST",
       headers: {
         Accept: "application/json",

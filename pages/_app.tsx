@@ -1,6 +1,6 @@
 import React from "react";
 import Head from "next/head";
-import { AppProps } from "next/app";
+import getConfig from "next/config";
 import { ThemeProvider } from "styled-components";
 import { ThemeProvider as ChakraThemeProvider } from "@chakra-ui/core";
 import cookies from "next-cookies";
@@ -40,8 +40,10 @@ App.getInitialProps = async ({ ctx }) => {
   const { token } = cookies(ctx);
   const { res, req } = ctx;
 
+  const { publicRuntimeConfig } = getConfig();
+
   if (token) {
-    const response = await fetch("http://localhost:3000/api/auth", {
+    const response = await fetch(`${publicRuntimeConfig.URL}/api/auth`, {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -52,7 +54,10 @@ App.getInitialProps = async ({ ctx }) => {
 
     const data = await response.json();
 
-    if (!data.user.app && req && req.url.includes("/new")) {
+    if (
+      (!data.user.app && req && req.url.includes("/new")) ||
+      (req && req.url.includes("/dashboard" && !data.user.app))
+    ) {
       if (res) {
         res.writeHead(301, {
           Location: "new",
