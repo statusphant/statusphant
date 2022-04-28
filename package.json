@@ -26,7 +26,7 @@
     "@emotion/styled": "^10.0.27",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
-    "cross-fetch": "^3.0.5",
+    "cross-fetch": "^3.1.5",
     "dotenv-safe": "^8.2.0",
     "emotion-theming": "^10.0.27",
     "js-cookie": "^2.2.1",
